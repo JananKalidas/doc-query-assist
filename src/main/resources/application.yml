@@ -3,9 +3,9 @@ spring:
     name: rag-pipeline-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/ragdb
-    username: raguser
-    password: ragpass
+    url: jdbc:postgresql://ep-falling-union-ayas6n2k-pooler.c-5.us-east-2.aws.neon.tech/neondb?sslmode=require
+    username: neondb_owner
+    password: npg_gCaGK1jN6hqA
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -44,16 +44,12 @@ rag:
     overlap-percent: 15         # prevents losing context that straddles chunk boundaries
   retrieval:
     top-k: 3                    # inject top 3 chunks, not just 1 (Risk #6)
-    similarity-threshold: 0.80   # chosen experimentally against sample queries; tune here without redeploying
+    similarity-threshold: 0.60   # chosen experimentally against sample queries; tune here without redeploying
   context:
     max-context-tokens: 6000    # retrieved chunks are trimmed to this budget before prompting (Risk #10)
 
-openai:
-  api-key: ${OPENAI_API_KEY}
-  embedding-model: text-embedding-3-small
-  base-url: https://api.openai.com/v1
-
-anthropic:
-  api-key: ${ANTHROPIC_API_KEY}
-  model: claude-sonnet-4-6
-  base-url: https://api.anthropic.com/v1
+gemini:
+  api-key: ${GEMINI_API_KEY}
+  embedding-model: gemini-embedding-001
+  generation-model: gemini-2.5-flash
+  base-url: https://generativelanguage.googleapis.com/v1beta

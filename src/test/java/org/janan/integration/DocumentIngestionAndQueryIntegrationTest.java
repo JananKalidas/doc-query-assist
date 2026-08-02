@@ -1,7 +1,7 @@
 package org.janan.integration;
 
-import org.janan.client.AnthropicClient;
 import org.janan.client.EmbeddingClient;
+import org.janan.client.GenerationClient;
 import org.janan.dto.AskRequest;
 import org.janan.dto.AskResponse;
 import org.janan.dto.UploadResponse;
@@ -58,7 +58,7 @@ public class DocumentIngestionAndQueryIntegrationTest {
     private EmbeddingClient embeddingClient;
 
     @MockitoBean
-    private AnthropicClient anthropicClient;
+    private GenerationClient generationClient;
 
     @Test
     void uploadThenAsk_returnsGroundedAnswerWithSources() {
@@ -68,7 +68,7 @@ public class DocumentIngestionAndQueryIntegrationTest {
         // cosine similarity of 1.0, well above the default 0.80 threshold.
         when(embeddingClient.embedBatch(any())).thenReturn(List.of(fixedEmbedding));
         when(embeddingClient.embed(anyString())).thenReturn(fixedEmbedding);
-        when(anthropicClient.generate(any())).thenReturn(
+        when(generationClient.generate(any())).thenReturn(
                 "Refunds are available within 30 days of purchase.");
 
         String documentText = "Our refund policy allows returns within 30 days of purchase, "

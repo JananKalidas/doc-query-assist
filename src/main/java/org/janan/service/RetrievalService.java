@@ -8,10 +8,16 @@ import org.janan.util.VectorUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 @Service
 public class RetrievalService {
+
+    private static final Logger log = LoggerFactory.getLogger(RetrievalService.class);
+
     private final EmbeddingClient embeddingClient;
     private final ChunkRepository chunkRepository;
     private final int topK;
@@ -33,6 +39,11 @@ public class RetrievalService {
         String embeddingLiteral = VectorUtils.toPgVectorLiteral(queryEmbedding);
 
         List<Chunk> candidates = chunkRepository.findTopKSimilarChunks(embeddingLiteral, topK);
+
+        candidates.forEach(chunk -> log.info(
+                "Candidate chunk [{}] similarity={}",
+                chunk.getChunkIndex(),
+                VectorUtils.cosineSimilarity(queryEmbedding, chunk.getEmbedding())));
 
         List<RetrievedChunk> scored = candidates.stream()
                 .map(chunk -> new RetrievedChunk(

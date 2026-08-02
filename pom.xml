@@ -12,10 +12,8 @@
     <name>doc-query-assist</name>
     <description>Document QA RAG service - Seeburger Exercise Set 1</description>
     <properties>
-        <!--  Language level pinned to 21 deliberately: matches typical enterprise
-                     prod baselines even though the local JDK (24) is newer and fully
-                     backward-compatible. Worth mentioning if asked in interview.  -->
         <java.version>21</java.version>
+        <maven.compiler.proc>full</maven.compiler.proc>
     </properties>
     <dependencies>
         <!--  Web layer: REST controllers  -->
@@ -68,6 +66,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.42</version>
             <optional>true</optional>
         </dependency>
         <!--  Testing  -->

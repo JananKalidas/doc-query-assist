@@ -6,6 +6,7 @@ import org.janan.model.Chunk;
 import org.janan.model.Document;
 import org.janan.repository.ChunkRepository;
 import org.janan.repository.DocumentRepository;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class IngestionService {
 
     private final TextExtractor textExtractor;

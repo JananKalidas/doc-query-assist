@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record AnthropicResponse(List<ContentBlock> content) {
-
+public record GeminiEmbeddingResponse(List<EmbeddingValues> embeddings) {
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public record ContentBlock(String type, String text){}
+    public record EmbeddingValues(List<Float> values) {
+    }
 }

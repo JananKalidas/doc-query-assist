@@ -1,10 +1,12 @@
 package org.janan.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ChunkingService {
 
     private static final double BOUNDARY_LOOKBACK_FRACTION = 0.2;
