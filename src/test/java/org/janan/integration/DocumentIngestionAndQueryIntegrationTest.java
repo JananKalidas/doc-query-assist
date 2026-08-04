@@ -2,7 +2,6 @@ package org.janan.integration;
 
 import org.janan.client.EmbeddingClient;
 import org.janan.client.GenerationClient;
-import org.janan.dto.AskRequest;
 import org.janan.dto.AskResponse;
 import org.janan.dto.UploadResponse;
 import org.junit.jupiter.api.Test;
@@ -19,6 +18,8 @@ import org.springframework.util.MultiValueMap;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
+
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -33,13 +34,11 @@ public class DocumentIngestionAndQueryIntegrationTest {
     private static final int EMBEDDING_DIMENSIONS = 1536;
 
     @Container
-    static PostgreSQLContainer postgres = new PostgreSQLContainer("pgvector/pgvector:pg16");
-//            DockerImageName.parse("pgvector/pgvector:pg16")
-//                    .asCompatibleSubstituteFor("postgres"))
-//            .withDatabaseName("ragdb_test")
-//            .withUsername("testuser")
-//            .withPassword("testpass")
-//            .withInitScript("init-test-db.sql");
+    static PostgreSQLContainer postgres = new PostgreSQLContainer("pgvector/pgvector:pg16")
+            .withDatabaseName("ragdb_test")
+            .withUsername("testuser")
+            .withPassword("testpass")
+            .withInitScript("init-test-db.sql");
 
     @DynamicPropertySource
     static void registerPostgresProperties(DynamicPropertyRegistry registry) {
@@ -54,6 +53,9 @@ public class DocumentIngestionAndQueryIntegrationTest {
     @org.springframework.beans.factory.annotation.Autowired
     private TestRestTemplate restTemplate;
 
+    // Real HTTP calls to OpenAI/Anthropic are replaced with these mocks -
+    // everything else in the request path (controllers, services,
+    // repositories, the native pgvector query) runs for real.
     @MockitoBean
     private EmbeddingClient embeddingClient;
 
@@ -93,13 +95,11 @@ public class DocumentIngestionAndQueryIntegrationTest {
         float[] fixedEmbedding = fixedVector();
         when(embeddingClient.embed(anyString())).thenReturn(fixedEmbedding);
 
-        String url = "http://localhost:" + port + "/api/ask";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<AskRequest> request = new HttpEntity<>(
-                new AskRequest("Is there any content to match against?"), headers);
+        String question = "Is there any content to match against?";
+        String encodedQuestion = URLEncoder.encode(question, StandardCharsets.UTF_8);
+        String url = "http://localhost:" + port + "/api/ask?q=" + encodedQuestion;
 
-        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
         assertThat(response.getBody()).contains("NO_RELEVANT_CHUNK");
@@ -129,13 +129,10 @@ public class DocumentIngestionAndQueryIntegrationTest {
     }
 
     private AskResponse askQuestion(String question) {
-        String url = "http://localhost:" + port + "/api/ask";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<AskRequest> request = new HttpEntity<>(new AskRequest(question), headers);
+        String encodedQuestion = URLEncoder.encode(question, StandardCharsets.UTF_8);
+        String url = "http://localhost:" + port + "/api/ask?q=" + encodedQuestion;
 
-        ResponseEntity<AskResponse> response =
-                restTemplate.postForEntity(url, request, AskResponse.class);
+        ResponseEntity<AskResponse> response = restTemplate.getForEntity(url, AskResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         return response.getBody();

@@ -14,6 +14,9 @@ import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class IngestionService {
 
@@ -22,6 +25,8 @@ public class IngestionService {
     private final EmbeddingClient embeddingClient;
     private final DocumentRepository documentRepository;
     private final ChunkRepository chunkRepository;
+
+    private static final Logger log = LoggerFactory.getLogger(IngestionService.class);
 
     public IngestionService(
             TextExtractor textExtractor,
@@ -38,6 +43,9 @@ public class IngestionService {
 
     @Transactional
     public Document ingest(MultipartFile file) {
+
+        log.info("Starting ingestion for file '{}' ({} bytes)",
+                file.getOriginalFilename(), file.getSize());
         Document document = new Document();
         document.setFileName(file.getOriginalFilename());
         document.setContentType(file.getContentType());
@@ -46,7 +54,7 @@ public class IngestionService {
         try {
             String text = extractText(file);
             List<String> chunkTexts = chunkingService.chunk(text);
-
+            log.info("Document '{}' split into {} chunks", file.getOriginalFilename(), chunkTexts.size());
             // Batch-embed all chunks from this document in one API call
             // rather than one call per chunk (Risk #11 - cost/latency).
             List<float[]> embeddings = embeddingClient.embedBatch(chunkTexts);
@@ -58,9 +66,13 @@ public class IngestionService {
             chunkRepository.saveAll(chunks);
 
             document.setStatus(Document.IngestionStatus.PROCESSED);
+            log.info("Document '{}' processed successfully (documentId={}, {} chunks stored)",
+                    file.getOriginalFilename(), document.getId(), chunks.size());
         } catch (RuntimeException e) {
             document.setStatus(Document.IngestionStatus.FAILED);
             documentRepository.save(document);
+            log.error("Ingestion failed for file '{}' (documentId={}): {}",
+                    file.getOriginalFilename(), document.getId(), e.getMessage(), e);
             throw e;
         }
 

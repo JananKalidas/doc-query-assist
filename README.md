@@ -96,9 +96,7 @@ curl -X POST http://localhost:8080/api/documents/upload -F "file=@sample.txt"
 
 Asking about it:
 ```bash
-curl -X POST http://localhost:8080/api/ask \
-  -H "Content-Type: application/json" \
-  -d '{"question": "What is the refund policy?"}'
+curl "http://localhost:8080/api/ask?q=What%20is%20the%20refund%20policy%3F"
 ```
 ```json
 {
@@ -113,9 +111,7 @@ curl -X POST http://localhost:8080/api/ask \
 
 And when there's genuinely nothing relevant:
 ```bash
-curl -X POST http://localhost:8080/api/ask \
-  -H "Content-Type: application/json" \
-  -d '{"question": "What is the company'\''s stock price?"}'
+curl "http://localhost:8080/api/ask?q=What%20is%20the%20company%27s%20stock%20price%3F"
 ```
 ```json
 {

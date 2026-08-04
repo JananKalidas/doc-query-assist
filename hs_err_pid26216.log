@@ -1,0 +1,247 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 134217728 bytes. Error detail: G1 virtual space
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   This process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Unscaled Compressed Oops mode in which the Java heap is
+#     placed in the first 4GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 4GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (os_windows.cpp:3564), pid=26216, tid=18180
+#
+# JRE version:  (24.0.1+9) (build )
+# Java VM: OpenJDK 64-Bit Server VM (24.0.1+9-30, mixed mode, emulated-client, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, windows-amd64)
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -XX:TieredStopAtLevel=1 org.janan.DocQueryAssistApplication
+
+Host: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz, 8 cores, 7G,  Windows 11 , 64 bit Build 26100 (10.0.26100.8115)
+Time: Mon Aug  3 06:53:17 2026 India Standard Time elapsed time: 2.035360 seconds (0d 0h 0m 2s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000002d4e28db540):  JavaThread "Unknown thread" [_thread_in_vm, id=18180, stack(0x000000dc7d700000,0x000000dc7d800000) (1024K)]
+
+Stack: [0x000000dc7d700000,0x000000dc7d800000]
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x730739]  (no source info available)
+V  [jvm.dll+0x8d9b23]  (no source info available)
+V  [jvm.dll+0x8dc00d]  (no source info available)
+V  [jvm.dll+0x8dc683]  (no source info available)
+V  [jvm.dll+0x2aa086]  (no source info available)
+V  [jvm.dll+0x72cc65]  (no source info available)
+V  [jvm.dll+0x72059a]  (no source info available)
+V  [jvm.dll+0x390cea]  (no source info available)
+V  [jvm.dll+0x3989f6]  (no source info available)
+V  [jvm.dll+0x38523e]  (no source info available)
+V  [jvm.dll+0x3854f8]  (no source info available)
+V  [jvm.dll+0x35d0cc]  (no source info available)
+V  [jvm.dll+0x35dd8d]  (no source info available)
+V  [jvm.dll+0x89d28f]  (no source info available)
+V  [jvm.dll+0x3f985d]  (no source info available)
+V  [jvm.dll+0x8858e6]  (no source info available)
+V  [jvm.dll+0x495f3e]  (no source info available)
+V  [jvm.dll+0x497d11]  (no source info available)
+C  [jli.dll+0x52a1]  (no source info available)
+C  [ucrtbase.dll+0x37b0]  (no source info available)
+C  [KERNEL32.DLL+0x2e8d7]  (no source info available)
+C  [ntdll.dll+0x8c3fc]  (no source info available)
+
+Lock stack of current Java thread (top to bottom):
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x00007fffaeb4f318, length=0, elements={
+}
+
+Java Threads: ( => current thread )
+Total: 0
+
+Other Threads:
+  0x000002d4e4bcfc70 WorkerThread "GC Thread#0"                     [id=25152, stack(0x000000dc7d800000,0x000000dc7d900000) (1024K)]
+  0x000002d4e4be5750 ConcurrentGCThread "G1 Main Marker"            [id=9660, stack(0x000000dc7d900000,0x000000dc7da00000) (1024K)]
+  0x000002d4e4be6a00 WorkerThread "G1 Conc#0"                       [id=21812, stack(0x000000dc7da00000,0x000000dc7db00000) (1024K)]
+
+[error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007fffae2814ea]
+VM state: not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x00007fffaebd45b0] Heap_lock - owner thread: 0x000002d4e28db540
+
+Heap address: 0x0000000081c00000, size: 2020 MB, Compressed Oops mode: 32-bit
+
+CDS archive(s) mapped at: [0x0000000000000000-0x0000000000000000-0x0000000000000000), size 0, SharedBaseAddress: 0x0000000800000000, ArchiveRelocationMode: 1.
+UseCompressedClassPointers 1, UseCompactObjectHeaders 0
+Narrow klass pointer bits 32, Max shift 3
+Narrow klass base: 0xffffffffffffffff, Narrow klass shift: -1
+Encoding Range: [0xffffffffffffffff - 0x000000007fffffff), (2147483648 bytes)
+Klass Range:    [0x0000000000000000 - 0x0000000000000000), (0 bytes)
+Klass ID Range:  [4294967295 - 0) (1)
+
+GC Precious Log:
+ CardTable entry size: 512
+ Card Set container configuration: InlinePtr #cards 5 size 8 Array Of Cards #cards 10 size 36 Howl #buckets 4 coarsen threshold 1843 Howl Bitmap #cards 512 size 80 coarsen threshold 460 Card regions per heap region 1 cards per card region 2048
+
+Heap:
+ garbage-first heap   total reserved 2068480K, committed 0K, used 0K [0x0000000081c00000, 0x0000000100000000)
+  region size 1024K, 0 young (0K), 0 survivors (0K)
+
+[error occurred during error reporting (printing heap information), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007fffae69e3e9]
+GC Heap History (0 events):
+No events
+
+Dll operation events (1 events):
+Event: 0.015 Loaded shared library C:\Users\janan\Java\jdk-24.0.1\bin\java.dll
+
+Deoptimization events (0 events):
+No events
+
+Classes loaded (0 events):
+No events
+
+Classes unloaded (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+VM Operations (0 events):
+No events
+
+Memory protections (0 events):
+No events
+
+Nmethod flushes (0 events):
+No events
+
+Events (0 events):
+No events
+
+
+Dynamic libraries:
+0x00007ff7c6cc0000 - 0x00007ff7c6cce000 	C:\Users\janan\Java\jdk-24.0.1\bin\java.exe
+0x00007ff8a20a0000 - 0x00007ff8a2307000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ff8a1af0000 - 0x00007ff8a1bb9000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ff89ed10000 - 0x00007ff89f104000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ff89f3c0000 - 0x00007ff89f50b000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ff88ee60000 - 0x00007ff88ee76000 	C:\Users\janan\Java\jdk-24.0.1\bin\jli.dll
+0x00007ff88e9f0000 - 0x00007ff88ea0b000 	C:\Users\janan\Java\jdk-24.0.1\bin\VCRUNTIME140.dll
+0x00007ff8a1e90000 - 0x00007ff8a2055000 	C:\WINDOWS\System32\USER32.dll
+0x00007ff89f300000 - 0x00007ff89f327000 	C:\WINDOWS\System32\win32u.dll
+0x00007ff888c30000 - 0x00007ff888ec3000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.8115_none_3e075c82e3354f9c\COMCTL32.dll
+0x00007ff8a1420000 - 0x00007ff8a14c9000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ff8a0fa0000 - 0x00007ff8a0fcb000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ff89f1d0000 - 0x00007ff89f2fa000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ff89e970000 - 0x00007ff89ea13000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ff8a1620000 - 0x00007ff8a1652000 	C:\WINDOWS\System32\IMM32.DLL
+0x00007ff897070000 - 0x00007ff89707c000 	C:\Users\janan\Java\jdk-24.0.1\bin\vcruntime140_1.dll
+0x00007ff826be0000 - 0x00007ff826c6e000 	C:\Users\janan\Java\jdk-24.0.1\bin\msvcp140.dll
+0x00007fffadf10000 - 0x00007fffaecb2000 	C:\Users\janan\Java\jdk-24.0.1\bin\server\jvm.dll
+0x00007ff8a0b80000 - 0x00007ff8a0c36000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ff8a0c50000 - 0x00007ff8a0cf7000 	C:\WINDOWS\System32\sechost.dll
+0x00007ff8a1d70000 - 0x00007ff8a1e88000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ff8a1590000 - 0x00007ff8a1610000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ff89e7d0000 - 0x00007ff89e82e000 	C:\WINDOWS\SYSTEM32\POWRPROF.dll
+0x00007ff88cad0000 - 0x00007ff88cb06000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ff8977d0000 - 0x00007ff8977db000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ff89e7b0000 - 0x00007ff89e7c4000 	C:\WINDOWS\SYSTEM32\UMPDC.dll
+0x00007ff89d700000 - 0x00007ff89d71b000 	C:\WINDOWS\SYSTEM32\kernel.appcore.dll
+0x00007ff896d80000 - 0x00007ff896d8a000 	C:\Users\janan\Java\jdk-24.0.1\bin\jimage.dll
+0x00007ff89c8a0000 - 0x00007ff89cae2000 	C:\WINDOWS\SYSTEM32\DBGHELP.DLL
+0x00007ff8a1660000 - 0x00007ff8a19e2000 	C:\WINDOWS\System32\combase.dll
+0x00007ff8a1340000 - 0x00007ff8a1417000 	C:\WINDOWS\System32\OLEAUT32.dll
+0x00007ff878330000 - 0x00007ff87836b000 	C:\WINDOWS\SYSTEM32\dbgcore.DLL
+0x00007ff89fd80000 - 0x00007ff89fe25000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ff88c120000 - 0x00007ff88c13e000 	C:\Users\janan\Java\jdk-24.0.1\bin\java.dll
+0x00007ff8a1130000 - 0x00007ff8a12c7000 	C:\WINDOWS\System32\ole32.dll
+0x00007ff89fe30000 - 0x00007ff8a0596000 	C:\WINDOWS\System32\SHELL32.dll
+0x00007ff89ea20000 - 0x00007ff89eb8a000 	C:\WINDOWS\System32\wintypes.dll
+
+JVMTI agents: none
+
+dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
+symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Users\janan\Java\jdk-24.0.1\bin;C:\WINDOWS\SYSTEM32;C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.8115_none_3e075c82e3354f9c;C:\Users\janan\Java\jdk-24.0.1\bin\server
+
+VM Arguments:
+jvm_args: -XX:TieredStopAtLevel=1 
+java_command: org.janan.DocQueryAssistApplication
+java_class_path (initial): C:\Users\janan\IdeaProjects\doc-query-assist\target\classes;C:\Users\janan\.m2\repository\org\springframework\boot\spring-boot\3.5.14\spring-boot-3.5.14.jar;C:\Users\janan\.m2\repository\org\springframework\boot\spring-boot-autoconfigure\3.5.14\spring-boot-autoconfigure-3.5.14.jar;C:\Users\janan\.m2\repository\ch\qos\logback\logback-classic\1.5.32\logback-classic-1.5.32.jar;C:\Users\janan\.m2\repository\ch\qos\logback\logback-core\1.5.32\logback-core-1.5.32.jar;C:\Users\janan\.m2\repository\org\apache\logging\log4j\log4j-to-slf4j\2.24.3\log4j-to-slf4j-2.24.3.jar;C:\Users\janan\.m2\repository\org\slf4j\jul-to-slf4j\2.0.17\jul-to-slf4j-2.0.17.jar;C:\Users\janan\.m2\repository\jakarta\annotation\jakarta.annotation-api\2.1.1\jakarta.annotation-api-2.1.1.jar;C:\Users\janan\.m2\repository\org\yaml\snakeyaml\2.4\snakeyaml-2.4.jar;C:\Users\janan\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.21.2\jackson-databind-2.21.2.jar;C:\Users\janan\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.21\jackson-annotations-2.21.jar;C:\Users\janan\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jdk8\2.21.2\jackson-datatype-jdk8-2.21.2.jar;C:\Users\janan\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.21.2\jackson-datatype-jsr310-2.21.2.jar;C:\Users\janan\.m2\repository\com\fasterxml\jackson\module\jackson-module-parameter-names\2.21.2\jackson-module-parameter-names-2.21.2.jar;C:\Users\janan\.m2\repository\org\apache\tomcat\embed\tomcat-embed-core\10.1.54\tomcat-embed-core-10.1.54.jar;C:\Users\janan\.m2\repository\org\apache\tomcat\embed\tomcat-embed-websocket\10.1.54\tomcat-embed-websocket-10.1.54.jar;C:\Users\janan\.m2\repository\org\springframework\spring-web\6.2.18\spring-web-6.2.18.jar;C:\Users\janan\.m2\repository\org\springframework\spring-beans\6.2.18\spring-beans-6.2.18.jar;C:\Users\janan\.m2\repository\org\springframework\spring-webmvc\6.2.18\spring-webmvc-6.2.18.jar;C:\Users\janan\.m2\repository\org\springframework\spring-aop\6.2.18\spring-aop-6.2.18.jar;C:\Users\janan\.m2\repository\org\springframework\spring-context\6.2.18\spring-context-6.2.18.jar;C:\Users\janan\.m2\repository\org\springframework\spring-expression\6.2.18\spring-expression-6.2.18.jar;C:\Users\janan\.m2\repository\com\zaxxer\HikariCP\6.3.3\HikariCP-6.3.3.jar;C:\Users\janan\.m2\repository\org\springframework\spring-jdbc\6.2.18\spring-jdbc-6.2.18.jar;C:\Users\janan\.m2\repository\org\hibernate\orm\hibernate-core\6.6.49.Final\hibernate-core-6.6.49.Final.jar;C:\Users\janan\.m2\repository\jakarta\persistence\jakarta.persistence-api\3.1.0\jakarta.persistence-api-3.1.0.jar;C:\Users\janan\.m2\repository\jakarta\transaction\jakarta.transaction-api\2.0.1\jakarta.transaction-api-2.0.1.jar;C:\Users\janan\.m2\repository\org\hibernate\common\hibernate-commons-annotations\7.0.3.Final\hibernate-commons-annotations-7.0.3.Final.jar;C:\Users\janan\.m2\repository\io\smallrye\jandex\3.2.0\jandex-3.2.0.jar;C:\Users\janan\.m2\repository\com\fasterxml\classmate\1.7.3\classmate-1.7.3.jar;C:\Users\janan\.m2\repository\net\bytebuddy\byte-buddy\1.17.8\byte-buddy-1.17.8.jar;C:\Users\janan\.m2\repository\org\glassfish\jaxb\jaxb-runtime\4.0.6\jaxb-runtime-4.0.6.jar;C:\Users\janan\.m2\repository\org\glassfish\jaxb\jaxb-core\4.0.6\jaxb-core-4.0.6.jar;C:\Users\janan\.m2\repository\org\eclipse\angus\angus-activation\2.0.3\angus-activation-2.0.3.jar;C:\Users\janan\.m2\repository\org\glassfish\jaxb\txw2\4.0.6\txw2-4.0.6.jar;C:\Users\janan\.m2\repository\com\sun\istack\istack-commons-runtime\4.1.2\istack-commons-runtime-4.1.2.jar;C:\Users\janan\.m2\repository\jakarta\inject\jakarta.inject-api\2.0.1\jakarta.inject-api-2.0.1.jar;C:\Users\janan\.m2\repository\org\antlr\antlr4-runtime\4.13.0\antlr4-runtime-4.13.0.jar;C:\Users\janan\.m2\repository\org\springframework\data\spring-data-jpa\3.5.11\spring-data-jpa-3.5.11.jar;C:\Users\janan\.m2\repository\org\springframework\data\spring-data-commons\3.5.11\spring-data-commons-3.5.11.jar;C:\Users\janan\.m2\repository\org\springframework\spring-orm\6.2.18\spring-orm-6.2.18.jar;C:\Users\janan\.m2\repository\org\springframework\spring-tx\6.2.18\spring-tx-6.2.18.jar;C:\Users\janan\.m2\repository\org\springframework\spring-aspects\6.2.18\spring-aspects-6.2.18.jar;C:\Users\janan\.m2\repository\org\aspectj\aspectjweaver\1.9.25.1\aspectjweaver-1.9.25.1.jar;C:\Users\janan\.m2\repository\org\apache\tomcat\embed\tomcat-embed-el\10.1.54\tomcat-embed-el-10.1.54.jar;C:\Users\janan\.m2\repository\org\hibernate\validator\hibernate-validator\8.0.3.Final\hibernate-validator-8.0.3.Final.jar;C:\Users\janan\.m2\repository\jakarta\validation\jakarta.validation-api\3.0.2\jakarta.validation-api-3.0.2.jar;C:\Users\janan\.m2\repository\org\springframework\boot\spring-boot-actuator-autoconfigure\3.5.14\spring-boot-actuator-autoconfigure-3.5.14.jar;C:\Users\janan\.m2\repository\org\springframework\boot\spring-boot-actuator\3.5.14\spring-boot-actuator-3.5.14.jar;C:\Users\janan\.m2\repository\io\micrometer\micrometer-observation\1.15.11\micrometer-observation-1.15.11.jar;C:\Users\janan\.m2\repository\io\micrometer\micrometer-commons\1.15.11\micrometer-commons-1.15.11.jar;C:\Users\janan\.m2\repository\io\micrometer\micrometer-jakarta9\1.15.11\micrometer-jakarta9-1.15.11.jar;C:\Users\janan\.m2\repository\io\micrometer\micrometer-core\1.15.11\micrometer-core-1.15.11.jar;C:\Users\janan\.m2\repository\org\hdrhistogram\HdrHistogram\2.2.2\HdrHistogram-2.2.2.jar;C:\Users\janan\.m2\repository\org\latencyutils\LatencyUtils\2.0.3\LatencyUtils-2.0.3.jar;C:\Users\janan\.m2\repository\org\postgresql\postgresql\42.7.10\postgresql-42.7.10.jar;C:\Users\janan\.m2\repository\org\checkerframework\checker-qual\3.52.0\checker-qual-3.52.0.jar;C:\Users\janan\.m2\repository\org\hibernate\orm\hibernate-vector\6.6.49.Final\hibernate-vector-6.6.49.Final.jar;C:\Users\janan\.m2\repository\org\jboss\logging\jboss-logging\3.6.3.Final\jboss-logging-3.6.3.Final.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-core\2.9.2\tika-core-2.9.2.jar;C:\Users\janan\.m2\repository\org\slf4j\slf4j-api\2.0.17\slf4j-api-2.0.17.jar;C:\Users\janan\.m2\repository\commons-io\commons-io\2.15.1\commons-io-2.15.1.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parsers-standard-package\2.9.2\tika-parsers-standard-package-2.9.2.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-apple-module\2.9.2\tika-parser-apple-module-2.9.2.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-zip-commons\2.9.2\tika-parser-zip-commons-2.9.2.jar;C:\Users\janan\.m2\repository\com\googlecode\plist\dd-plist\1.28\dd-plist-1.28.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-audiovideo-module\2.9.2\tika-parser-audiovideo-module-2.9.2.jar;C:\Users\janan\.m2\repository\com\drewnoakes\metadata-extractor\2.19.0\metadata-extractor-2.19.0.jar;C:\Users\janan\.m2\repository\com\adobe\xmp\xmpcore\6.1.11\xmpcore-6.1.11.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-cad-module\2.9.2\tika-parser-cad-module-2.9.2.jar;C:\Users\janan\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.21.2\jackson-core-2.21.2.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-code-module\2.9.2\tika-parser-code-module-2.9.2.jar;C:\Users\janan\.m2\repository\org\codelibs\jhighlight\1.1.0\jhighlight-1.1.0.jar;C:\Users\janan\.m2\repository\org\ccil\cowan\tagsoup\tagsoup\1.2.1\tagsoup-1.2.1.jar;C:\Users\janan\.m2\repository\org\ow2\asm\asm\9.7\asm-9.7.jar;C:\Users\janan\.m2\repository\com\epam\parso\2.0.14\parso-2.0.14.jar;C:\Users\janan\.m2\repository\org\tallison\jmatio\1.5\jmatio-1.5.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-crypto-module\2.9.2\tika-parser-crypto-module-2.9.2.jar;C:\Users\janan\.m2\repository\org\bouncycastle\bcmail-jdk18on\1.77\bcmail-jdk18on-1.77.jar;C:\Users\janan\.m2\repository\org\bouncycastle\bcutil-jdk18on\1.77\bcutil-jdk18on-1.77.jar;C:\Users\janan\.m2\repository\org\bouncycastle\bcpkix-jdk18on\1.77\bcpkix-jdk18on-1.77.jar;C:\Users\janan\.m2\repository\org\bouncycastle\bcprov-jdk18on\1.77\bcprov-jdk18on-1.77.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-digest-commons\2.9.2\tika-parser-digest-commons-2.9.2.jar;C:\Users\janan\.m2\repository\commons-codec\commons-codec\1.18.0\commons-codec-1.18.0.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-font-module\2.9.2\tika-parser-font-module-2.9.2.jar;C:\Users\janan\.m2\repository\org\apache\pdfbox\fontbox\2.0.31\fontbox-2.0.31.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-html-module\2.9.2\tika-parser-html-module-2.9.2.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-image-module\2.9.2\tika-parser-image-module-2.9.2.jar;C:\Users\janan\.m2\repository\com\github\jai-imageio\jai-imageio-core\1.4.0\jai-imageio-core-1.4.0.jar;C:\Users\janan\.m2\repository\org\apache\pdfbox\jbig2-imageio\3.0.4\jbig2-imageio-3.0.4.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-mail-module\2.9.2\tika-parser-mail-module-2.9.2.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-mail-commons\2.9.2\tika-parser-mail-commons-2.9.2.jar;C:\Users\janan\.m2\repository\org\apache\james\apache-mime4j-core\0.8.11\apache-mime4j-core-0.8.11.jar;C:\Users\janan\.m2\repository\org\apache\james\apache-mime4j-dom\0.8.11\apache-mime4j-dom-0.8.11.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-microsoft-module\2.9.2\tika-parser-microsoft-module-2.9.2.jar;C:\Users\janan\.m2\repository\com\pff\java-libpst\0.9.3\java-libpst-0.9.3.jar;C:\Users\janan\.m2\repository\org\apache\commons\commons-lang3\3.17.0\commons-lang3-3.17.0.jar;C:\Users\janan\.m2\repository\org\apache\poi\poi\5.2.5\poi-5.2.5.jar;C:\Users\janan\.m2\repository\org\apache\commons\commons-math3\3.6.1\commons-math3-3.6.1.jar;C:\Users\janan\.m2\repository\com\zaxxer\SparseBitSet\1.3\SparseBitSet-1.3.jar;C:\Users\janan\.m2\repository\org\apache\logging\log4j\log4j-api\2.24.3\log4j-api-2.24.3.jar;C:\Users\janan\.m2\repository\org\apache\poi\poi-scratchpad\5.2.5\poi-scratchpad-5.2.5.jar;C:\Users\janan\.m2\repository\org\apache\poi\poi-ooxml\5.2.5\poi-ooxml-5.2.5.jar;C:\Users\janan\.m2\repository\org\apache\poi\poi-ooxml-lite\5.2.5\poi-ooxml-lite-5.2.5.jar;C:\Users\janan\.m2\repository\org\apache\xmlbeans\xmlbeans\5.2.0\xmlbeans-5.2.0.jar;C:\Users\janan\.m2\repository\com\github\virtuald\curvesapi\1.08\curvesapi-1.08.jar;C:\Users\janan\.m2\repository\commons-logging\commons-logging\1.3.1\commons-logging-1.3.1.jar;C:\Users\janan\.m2\repository\com\healthmarketscience\jackcess\jackcess\4.0.5\jackcess-4.0.5.jar;C:\Users\janan\.m2\repository\com\healthmarketscience\jackcess\jackcess-encrypt\4.0.2\jackcess-encrypt-4.0.2.jar;C:\Users\janan\.m2\repository\org\slf4j\jcl-over-slf4j\2.0.17\jcl-over-slf4j-2.0.17.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-miscoffice-module\2.9.2\tika-parser-miscoffice-module-2.9.2.jar;C:\Users\janan\.m2\repository\org\apache\commons\commons-collections4\4.4\commons-collections4-4.4.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-news-module\2.9.2\tika-parser-news-module-2.9.2.jar;C:\Users\janan\.m2\repository\com\rometools\rome\2.1.0\rome-2.1.0.jar;C:\Users\janan\.m2\repository\com\rometools\rome-utils\2.1.0\rome-utils-2.1.0.jar;C:\Users\janan\.m2\repository\org\jdom\jdom2\2.0.6.1\jdom2-2.0.6.1.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-ocr-module\2.9.2\tika-parser-ocr-module-2.9.2.jar;C:\Users\janan\.m2\repository\org\apache\commons\commons-exec\1.4.0\commons-exec-1.4.0.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-pdf-module\2.9.2\tika-parser-pdf-module-2.9.2.jar;C:\Users\janan\.m2\repository\org\apache\pdfbox\pdfbox\2.0.31\pdfbox-2.0.31.jar;C:\Users\janan\.m2\repository\org\apache\pdfbox\pdfbox-tools\2.0.31\pdfbox-tools-2.0.31.jar;C:\Users\janan\.m2\repository\org\apache\pdfbox\jempbox\1.8.17\jempbox-1.8.17.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-pkg-module\2.9.2\tika-parser-pkg-module-2.9.2.jar;C:\Users\janan\.m2\repository\org\tukaani\xz\1.9\xz-1.9.jar;C:\Users\janan\.m2\repository\org\brotli\dec\0.1.2\dec-0.1.2.jar;C:\Users\janan\.m2\repository\com\github\junrar\junrar\7.5.5\junrar-7.5.5.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-text-module\2.9.2\tika-parser-text-module-2.9.2.jar;C:\Users\janan\.m2\repository\com\github\albfernandez\juniversalchardet\2.4.0\juniversalchardet-2.4.0.jar;C:\Users\janan\.m2\repository\org\apache\commons\commons-csv\1.10.0\commons-csv-1.10.0.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-webarchive-module\2.9.2\tika-parser-webarchive-module-2.9.2.jar;C:\Users\janan\.m2\repository\org\netpreserve\jwarc\0.29.0\jwarc-0.29.0.jar;C:\Users\janan\.m2\repository\org\apache\commons\commons-compress\1.26.1\commons-compress-1.26.1.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-xml-module\2.9.2\tika-parser-xml-module-2.9.2.jar;C:\Users\janan\.m2\repository\xerces\xercesImpl\2.12.2\xercesImpl-2.12.2.jar;C:\Users\janan\.m2\repository\xml-apis\xml-apis\1.4.01\xml-apis-1.4.01.jar;C:\Users\janan\.m2\repository\org\apache\tika\tika-parser-xmp-commons\2.9.2\tika-parser-xmp-commons-2.9.2.jar;C:\Users\janan\.m2\repository\org\apache\pdfbox\xmpbox\2.0.31\xmpbox-2.0.31.jar;C:\Users\janan\.m2\repository\org\gagravarr\vorbis-java-tika\0.8\vorbis-java-tika-0.8.jar;C:\Users\janan\.m2\repository\org\gagravarr\vorbis-java-core\0.8\vorbis-java-core-0.8.jar;C:\Users\janan\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\4.0.4\jakarta.xml.bind-api-4.0.4.jar;C:\Users\janan\.m2\repository\jakarta\activation\jakarta.activation-api\2.1.4\jakarta.activation-api-2.1.4.jar;C:\Users\janan\.m2\repository\org\springframework\spring-core\6.2.18\spring-core-6.2.18.jar;C:\Users\janan\.m2\repository\org\springframework\spring-jcl\6.2.18\spring-jcl-6.2.18.jar
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+     intx CICompilerCount                          = 4                                         {product} {ergonomic}
+     uint ConcGCThreads                            = 2                                         {product} {ergonomic}
+     uint G1ConcRefinementThreads                  = 8                                         {product} {ergonomic}
+   size_t G1HeapRegionSize                         = 1048576                                   {product} {ergonomic}
+   size_t InitialHeapSize                          = 134217728                                 {product} {ergonomic}
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MarkStackSizeMax                         = 536870912                                 {product} {ergonomic}
+   size_t MaxHeapSize                              = 2118123520                                {product} {ergonomic}
+   size_t MinHeapDeltaBytes                        = 1048576                                   {product} {ergonomic}
+   size_t MinHeapSize                              = 8388608                                   {product} {ergonomic}
+    uintx NonNMethodCodeHeapSize                   = 4096                                   {pd product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 0                                      {pd product} {ergonomic}
+     bool ProfileInterpreter                       = false                                  {pd product} {command line}
+    uintx ProfiledCodeHeapSize                     = 0                                      {pd product} {ergonomic}
+   size_t SoftMaxHeapSize                          = 2118123520                             {manageable} {ergonomic}
+     intx TieredStopAtLevel                        = 1                                         {product} {command line}
+     bool UseCompressedOops                        = true                           {product lp64_product} {ergonomic}
+     bool UseG1GC                                  = true                                      {product} {ergonomic}
+     bool UseLargePagesIndividualAllocation        = false                                  {pd product} {ergonomic}
+
+Logging:
+Log output configuration:
+ #0: stdout all=warning uptime,level,tags foldmultilines=false
+ #1: stderr all=off uptime,level,tags foldmultilines=false
+
+Environment Variables:
+JAVA_HOME=C:\Users\janan\Java\jdk-24.0.1
+PATH=C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Users\janan\Java\jdk-24.0.1\bin;C:\Users\janan\apache-maven-3.9.10\bin;C:\Program Files\Git\cmd;C:\Users\janan\AppData\Local\Microsoft\WindowsApps;;C:\Users\janan\AppData\Local\Programs\DockerDesktop\resources\bin
+USERNAME=janan
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 142 Stepping 10, GenuineIntel
+TMP=C:\Users\janan\AppData\Local\Temp
+TEMP=C:\Users\janan\AppData\Local\Temp
+
+
+
+
+Periodic native trim disabled
+
+---------------  S Y S T E M  ---------------
+
+OS:
+ Windows 11 , 64 bit Build 26100 (10.0.26100.8115)
+OS uptime: 4 days 12:56 hours
+
+CPU: total 8 (initial active 8) (4 cores per cpu, 2 threads per core) family 6 model 142 stepping 10 microcode 0xea, cx8, cmov, fxsr, ht, mmx, 3dnowpref, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, lzcnt, tsc, tscinvbit, avx, avx2, aes, erms, clmul, bmi1, bmi2, adx, fma, vzeroupper, clflush, clflushopt, rdtscp, f16c
+Processor Information for the first 8 processors :
+  Max Mhz: 1800, Current Mhz: 1600, Mhz Limit: 1584
+
+Memory: 4k page, system-wide physical 8078M (750M free)
+TotalPageFile size 20486M (AvailPageFile size 182M)
+current process WorkingSet (physical memory assigned to process): 13M, peak: 13M
+current process commit charge ("private bytes"): 56M, peak: 183M
+
+vm_info: OpenJDK 64-Bit Server VM (24.0.1+9-30) for windows-amd64 JRE (24.0.1+9-30), built on 2025-03-05T07:23:45Z with MS VC++ 17.6 (VS2022)
+
+END.

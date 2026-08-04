@@ -1,14 +1,11 @@
 package org.janan.controller;
 
-import jakarta.validation.Valid;
-import org.janan.dto.AskRequest;
+
+import jakarta.validation.constraints.NotBlank;
 import org.janan.dto.AskResponse;
 import org.janan.service.QueryService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -20,13 +17,10 @@ public class QueryController {
         this.queryService = queryService;
     }
 
-    @PostMapping("/ask")
+    @GetMapping("/ask")
     public ResponseEntity<AskResponse> ask(
-            @Valid @RequestBody AskRequest request
-            ){
-        return ResponseEntity.ok(
-                queryService.ask(request.question())
-        );
+            @RequestParam("q") @NotBlank(message = "Question must not be blank") String q) {
+        return ResponseEntity.ok(queryService.ask(q));
     }
 
 
