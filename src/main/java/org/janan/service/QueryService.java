@@ -24,7 +24,6 @@ public class QueryService {
 
     public AskResponse ask(String question) {
         // Throws NoRelevantChunkFoundException (-> 422) if nothing clears
-        // the similarity threshold - propagates up to the global handler.
         List<RetrievedChunk> retrieved = retrievalService.retrieve(question);
 
         Prompt prompt = promptBuilder.build(question, retrieved);

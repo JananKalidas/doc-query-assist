@@ -36,17 +36,16 @@ management:
       show-details: always
 
 # ---- RAG-specific configuration ----
-# Everything here is intentionally externalized (not hardcoded) so every
-# number has a one-line justification ready if asked in interview.
+
 rag:
   chunking:
     chunk-size-chars: 800       # ~ approximates 400-500 tokens for typical English text
     overlap-percent: 15         # prevents losing context that straddles chunk boundaries
   retrieval:
-    top-k: 3                    # inject top 3 chunks, not just 1 (Risk #6)
+    top-k: 3                    # inject top 3 chunks, not just 1
     similarity-threshold: 0.60   # chosen experimentally against sample queries; tune here without redeploying
   context:
-    max-context-tokens: 6000    # retrieved chunks are trimmed to this budget before prompting (Risk #10)
+    max-context-tokens: 6000    # retrieved chunks are trimmed to this budget before prompting
 
 gemini:
   api-key: ${GEMINI_API_KEY}

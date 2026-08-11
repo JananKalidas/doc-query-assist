@@ -3,6 +3,7 @@ package org.janan.exception;
 import org.janan.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
@@ -20,6 +21,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleNoRelevantChunk(NoRelevantChunkFoundException e) {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .body(ErrorResponse.of("NO_RELEVANT_CHUNK", e.getMessage(), 422));
+    }
+
+    //Query is too vauge
+    @ExceptionHandler(QueryTooVagueException.class)
+    public ResponseEntity<ErrorResponse> handleQueryTooVague(QueryTooVagueException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ErrorResponse.of("QUERY_TOO_VAGUE", e.getMessage(), 400));
     }
 
     // unparseable file
@@ -40,6 +48,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGenerationFailure(GenerationException e) {
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
                 .body(ErrorResponse.of("GENERATION_PROVIDER_ERROR", e.getMessage(), 502));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException e) {
+        String message = e.getBindingResult().getFieldErrors().stream()
+                .findFirst()
+                .map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
+                .orElse("Validation failed");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ErrorResponse.of("VALIDATION_ERROR", message, 400));
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
