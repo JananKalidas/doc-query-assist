@@ -1,4 +1,4 @@
-package org.janan.validaor;
+package org.janan.service;
 
 import org.janan.exception.QueryTooVagueException;
 import org.springframework.stereotype.Component;
