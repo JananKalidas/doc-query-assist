@@ -6,13 +6,13 @@ Built for the Seeburger second-round assignment.
 
 ## What it does
 
-Upload a PDF or text file, then ask questions about it in plain English. The service finds the most relevant parts of the document, hands them to an LLM along with your question, and returns an answer plus the exact passages it was based on. If nothing in the document is actually relevant to your question, you get a clear "couldn't find anything relevant" response rather than a confident-sounding guess.
+Upload a PDF or text file, then ask questions about it in plain English. The service finds the most relevant parts of the document, hands them to an LLM along with your question, and returns an answer plus the exact passages it was based on. If nothing in the document is actually relevant to your question, you get a clear "couldn't find anything relevant" response rather than a confident-sounding guess. Genuinely vague questions get rejected even earlier, before any API call is made at all.
 
 ## How it's put together
 
 ```
 Upload:  DocumentController -> IngestionService -> TextExtractor -> ChunkingService -> EmbeddingClient -> Postgres/pgvector
-Ask:     QueryController -> QueryService -> RetrievalService -> PromptBuilder -> GenerationClient -> answer + sources
+Ask:     QueryController -> QueryService -> QueryValidator -> RetrievalService -> PromptBuilder -> GenerationClient -> answer + sources
 ```
 
 I kept this intentionally flat. It would have been easy to add a `RetrievalCoordinator` or an `EmbeddingOrchestrator` on top, but that just adds indirection without adding value for a project this size — every class here exists because a specific step in the pipeline needed it, and nothing more.
@@ -37,6 +37,12 @@ The overlap exists because without it, a fact that happens to sit right at a chu
 
 Both the chunk size and the overlap percentage live in `application.yml`, not hardcoded — easy to tune without touching code.
 
+## Handling vague queries
+
+Before a question ever reaches the embedding API, `QueryValidator` runs a cheap pre-flight check: if the query is under 3 words, or every word in it is a stopword (things like "tell me about it" or "what is that"), it's rejected outright with a 400, rather than burning an API call only to fail later with a low-confidence 422.
+
+The two checks are deliberately kept separate rather than combined into one filtered word count. An earlier version of this combined them - reject if fewer than 3 *non-stopword* words remain - and that wrongly rejected genuinely good short questions like "What is Docker?", since after stripping "what" and "is" only one content word ("Docker") is left. Splitting the checks (raw length OR all-stopwords) avoids punishing short-but-specific questions just because most of their words are grammatical scaffolding rather than content.
+
 ## Keeping answers honest
 
 This is the part I spent the most time thinking about, since it's really the whole point of doing RAG instead of just calling an LLM directly.
@@ -48,6 +54,12 @@ The threshold is set at **0.60**, and getting to that number is a decent example
 For the chunks that do pass, the prompt sent to the model is explicit: answer only from what's given, and say so plainly if the answer isn't there rather than guessing. There's also a line in there addressing something that's easy to forget — the retrieved text came from a document someone uploaded, which makes it untrusted input. The system prompt tells the model to treat that content as reference material only and not follow any instructions that might be sitting inside it.
 
 One more small thing: the API returns a `similarityScore` for each source, not a "confidence" number. A model doesn't actually know how confident it should be — that's not a value it can meaningfully produce — so I didn't want to invent one. A cosine similarity score, on the other hand, is something concrete I can point to and explain.
+
+## Managing the context window
+
+`top-k: 3` already keeps the number of retrieved chunks small, but I added a second, reactive safety net on top of that: `PromptBuilder` estimates the total token count of the assembled context (a rough chars-per-token approximation, same basis as the chunking size) and compares it against a configurable budget (`rag.context.max-context-tokens`, default 6000).
+
+If the retrieved chunks would push the prompt over that budget, the lowest-scoring chunks are dropped first - the list arriving at `PromptBuilder` is already sorted by similarity score, so this is just trimming from the end - until the estimate fits, always keeping at least one chunk. In practice, with the current chunk size and top-k settings, this rarely actually triggers; it's there as a safety net for if those settings change later, not something expected to fire under normal use.
 
 ## The actual vector search
 
@@ -109,6 +121,19 @@ curl "http://localhost:8080/api/ask?q=What%20is%20the%20refund%20policy%3F"
 }
 ```
 
+Asking something too vague:
+```bash
+curl "http://localhost:8080/api/ask?q=tell%20me%20about%20it"
+```
+```json
+{
+  "error": "QUERY_TOO_VAGUE",
+  "message": "Query is too vague to search against. Please ask a more specific question.",
+  "status": 400,
+  "timeStamp": "2026-08-05T10:12:03.100000000Z"
+}
+```
+
 And when there's genuinely nothing relevant:
 ```bash
 curl "http://localhost:8080/api/ask?q=What%20is%20the%20company%27s%20stock%20price%3F"
@@ -128,12 +153,12 @@ I didn't aim for a coverage number — I tried to cover the things that are actu
 
 - Chunking: empty documents, documents smaller than one chunk, whether overlap actually overlaps, whether paragraph boundaries get respected, and a guard against a misconfigured overlap value causing an infinite loop
 - The similarity math: identical vectors, orthogonal vectors, opposite vectors, mismatched dimensions, the zero-vector edge case
-- Prompt building: that the refusal instruction and the injection-mitigation line are actually present, that chunk ordering is preserved
+- Prompt building: that the refusal instruction and the injection-mitigation line are actually present, that chunk ordering is preserved, and that the lowest-scoring chunk gets dropped first when the context would exceed the token budget
 - One integration test end to end (upload -> ask -> answer) against a real Postgres+pgvector instance via Testcontainers, rather than mocking the database
 
 The chunking, vector math, and prompt tests don't need Docker or a database at all:
 ```bash
-mvn test -Dtest=ChunkingServiceTest,VectorUtilsTest,PromptBuilderTest
+mvn test "-Dtest=ChunkingServiceTest,VectorUtilsTest,PromptBuilderTest"
 ```
 
 Full suite, including the Testcontainers integration test:
@@ -141,7 +166,9 @@ Full suite, including the Testcontainers integration test:
 mvn test
 ```
 
-A small note on the logging: `RetrievalService` logs each candidate chunk's similarity score at INFO level before the threshold filter runs. I added this while debugging the threshold value above and decided to leave it in rather than strip it out — it's genuinely useful for seeing what the retrieval step is actually doing, and it's exactly the kind of thing worth having on hand if a similar tuning question comes up again later.
+A screenshot of the passing test run is in [`docs/test-results.png`](docs/test-results.png).
+
+A small note on the logging: `RetrievalService` logs each candidate chunk's similarity score at INFO level before the threshold filter runs, and `IngestionService`/`ChunkingService` log the ingestion lifecycle (file received, chunk count, success/failure) as well. I added most of this while actively debugging (the threshold value above, in particular) and decided to leave it in rather than strip it out - it's genuinely useful for seeing what the pipeline is actually doing, not just leftover debug noise.
 
 ## What I'd add next
 
